@@ -21,6 +21,9 @@ on:
     - '!docs/**'
     - '!new-cli/**'
 
+permissions:
+  contents: read
+
 jobs:
   format:
     runs-on: ubuntu-latest

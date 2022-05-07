@@ -22,8 +22,15 @@ on:
   schedule:
     - cron: '0 12 * * *'
 
+permissions:
+  contents: read
+
 jobs:
   analyze:
+    permissions:
+      actions: read  # for github/codeql-action/init to get workflow details
+      contents: read  # for actions/checkout to fetch code
+      security-events: write  # for github/codeql-action/analyze to upload SARIF results
     name: Analyze
     runs-on: ubuntu-latest
 
@@ -40,14 +47,14 @@ jobs:
         fetch-depth: 0
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
+      uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
 
     -
       name: Cache cake frosting
       id: cache-cake
-      uses: actions/cache@v2.1.7
+      uses: actions/cache@v3.0.2
       with:
         path: run
         key: run-${{ runner.os }}-${{ hashFiles('./build/**') }}
@@ -72,4 +79,4 @@ jobs:
       run: dotnet run/build.dll --target=Build
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+      uses: github/codeql-action/analyze@v2
