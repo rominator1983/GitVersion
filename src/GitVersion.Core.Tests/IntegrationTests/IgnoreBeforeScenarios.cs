@@ -37,4 +37,30 @@ public class IgnoreBeforeScenarios : TestBase
 
         fixture.AssertFullSemver(expectedFullSemVer, configuration);
     }
+
+    [Test]
+    public void ShouldFallbackToBaseVersionWhenAllMergeCommitsAreIgnored()
+    {
+        using var fixture = new EmptyRepositoryFixture();
+        fixture.Repository.MakeATaggedCommit("1.0.3");
+        fixture.Repository.CreateBranch("develop");
+        fixture.Repository.MakeCommits(1);
+
+        fixture.Repository.CreateBranch("feature/feature1");
+        fixture.Checkout("feature/feature1");
+        var commit = fixture.Repository.MakeACommit("+semver:major");
+        fixture.Checkout("develop");
+        fixture.Repository.MergeNoFF("feature/feature1", Generate.SignatureNow());
+
+        var config = new ConfigurationBuilder()
+            .Add(new Config
+            {
+                Ignore = new IgnoreConfig
+                {
+                    ShAs = new[] { commit.Sha }
+                }
+            }).Build();
+
+        fixture.AssertFullSemver("1.1.0-alpha.2", config);
+    }
 }
