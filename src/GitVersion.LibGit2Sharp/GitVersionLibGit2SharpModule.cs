@@ -16,7 +16,11 @@ public class GitVersionLibGit2SharpModule : IGitVersionModule
             return gitRepository;
         });
 
-        services.AddSingleton<IMutatingGitRepository>(sp => (IMutatingGitRepository)sp.GetRequiredService<IGitRepository>());
+        services.AddSingleton<IIgnoredFilterProvider, IgnoredFilterProvider>();
+        services.AddSingleton<IGitRepository, IgnoredFilteringGitRepositoryDecorator>();
+
+        services.AddSingleton<IMutatingGitRepository, IgnoredFilteringGitRepositoryDecorator>();
+
         services.AddSingleton<IGitRepositoryInfo, GitRepositoryInfo>();
     }
 }

@@ -63,13 +63,13 @@ public class RepositoryStore : IRepositoryStore
 
         var filter = new CommitFilter { IncludeReachableFrom = mainlineTip, ExcludeReachableFrom = baseVersionSource, SortBy = CommitSortStrategies.Reverse, FirstParentOnly = true };
 
-        return this.repository.Commits.QueryBy(filter);
+        return this.repository.QueryBy(filter);
     }
 
     public IEnumerable<ICommit> GetMergeBaseCommits(ICommit? mergeCommit, ICommit? mergedHead, ICommit? findMergeBase)
     {
         var filter = new CommitFilter { IncludeReachableFrom = mergedHead, ExcludeReachableFrom = findMergeBase };
-        var commitCollection = this.repository.Commits.QueryBy(filter);
+        var commitCollection = this.repository.QueryBy(filter);
 
         var commits = mergeCommit != null
             ? new[] { mergeCommit }.Union(commitCollection)
@@ -329,13 +329,13 @@ public class RepositoryStore : IRepositoryStore
     {
         var filter = new CommitFilter { IncludeReachableFrom = currentCommit, ExcludeReachableFrom = baseVersionSource, SortBy = CommitSortStrategies.Topological | CommitSortStrategies.Time };
 
-        return this.repository.Commits.QueryBy(filter);
+        return this.repository.QueryBy(filter);
     }
 
     public bool IsCommitOnBranch(ICommit? baseVersionSource, IBranch branch, ICommit firstMatchingCommit)
     {
         var filter = new CommitFilter { IncludeReachableFrom = branch, ExcludeReachableFrom = baseVersionSource, FirstParentOnly = true };
-        var commitCollection = this.repository.Commits.QueryBy(filter);
+        var commitCollection = this.repository.QueryBy(filter);
         return commitCollection.Contains(firstMatchingCommit);
     }
 

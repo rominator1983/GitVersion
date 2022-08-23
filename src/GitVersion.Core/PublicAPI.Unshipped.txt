@@ -437,11 +437,11 @@ GitVersion.IBranchCollection.UpdateTrackedBranch(GitVersion.IBranch! branch, str
 GitVersion.IBranchCollection.this[string! name].get -> GitVersion.IBranch?
 GitVersion.ICommit
 GitVersion.ICommit.Message.get -> string!
-GitVersion.ICommit.Parents.get -> System.Collections.Generic.IEnumerable<GitVersion.ICommit!>!
+GitVersion.IGitRepository.Commits.get -> System.Collections.Generic.IEnumerable<GitVersion.ICommit!>!
 GitVersion.ICommit.When.get -> System.DateTimeOffset
 GitVersion.ICommitCollection
 GitVersion.ICommitCollection.GetCommitsPriorTo(System.DateTimeOffset olderThan) -> System.Collections.Generic.IEnumerable<GitVersion.ICommit!>!
-GitVersion.ICommitCollection.QueryBy(GitVersion.CommitFilter! commitFilter) -> System.Collections.Generic.IEnumerable<GitVersion.ICommit!>!
+GitVersion.IGitRepository.QueryBy(GitVersion.CommitFilter! commitFilter) -> System.Collections.Generic.IEnumerable<GitVersion.ICommit!>!
 GitVersion.IConverterContext
 GitVersion.IConverterContext.WorkingDirectory.get -> string!
 GitVersion.IEnvironment

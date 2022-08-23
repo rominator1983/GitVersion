@@ -9,10 +9,13 @@ public interface IGitRepository : IDisposable
     ITagCollection Tags { get; }
     IReferenceCollection Refs { get; }
     IBranchCollection Branches { get; }
-    ICommitCollection Commits { get; }
+    IEnumerable<ICommit> Commits { get; }
+
+    IEnumerable<ICommit> QueryBy(CommitFilter commitFilter);
     IRemoteCollection Remotes { get; }
 
     ICommit? FindMergeBase(ICommit commit, ICommit otherCommit);
+
     int GetNumberOfUncommittedChanges();
     void DiscoverRepository(string? gitDirectory);
 }
