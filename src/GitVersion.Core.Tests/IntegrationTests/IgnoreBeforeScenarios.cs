@@ -40,6 +40,29 @@ public class IgnoreBeforeScenarios : TestBase
     }
 
     [Test]
+	// TODO: adaüt
+    public void ShouldFallbackToBaseVersionWhenAllCommitsAreIgnored_IgnoreCommits()
+    {
+        using var fixture = new EmptyRepositoryFixture();
+        fixture.Repository.MakeATaggedCommit("1.0.3");
+        fixture.Repository.CreateBranch("develop");
+        fixture.Repository.MakeCommits(1);
+        var commit = fixture.Repository.MakeACommit("+semver:major");
+
+        var config = new ConfigurationBuilder()
+            .Add(new Config
+            {
+                Ignore = new IgnoreConfig
+                {
+                    ShAs = new[] { commit.Sha }
+                }
+            }).Build();
+
+        fixture.AssertFullSemver("1.0.4+2", config);
+    }
+
+
+    [Test]
     public void ShouldFallbackToBaseVersionWhenAllMergeCommitsAreIgnored()
     {
         using var fixture = new EmptyRepositoryFixture();

@@ -149,7 +149,6 @@ public class IncrementStrategyFinder : IIncrementStrategyFinder
 
     private static VersionField? GetIncrementFromMessage(IgnoredState ignoredState, string message, Regex majorRegex, Regex minorRegex, Regex patchRegex, Regex none)
     {
-        // TODO 3074: test
         if (ignoredState.IsIgnored) return null;
 
         if (none.IsMatch(message)) return VersionField.None;
